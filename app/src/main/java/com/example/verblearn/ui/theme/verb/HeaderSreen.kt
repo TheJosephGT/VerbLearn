@@ -5,46 +5,29 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.verblearn.R
-import com.example.verblearn.ui.theme.ColorAplication
 
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun SplashScreen() {
+fun HeaderScreen() {
     val color = Color(0xFF65D0F2)
     val colorBlanco = Color(0xFFFFFFFF)
 
@@ -63,29 +46,51 @@ fun SplashScreen() {
         }
         .toAnnotatedString()
 
-    Box(
+
+    Column(
         modifier = Modifier
-            .width(430.dp)
-            .height(932.dp)
-            .background(color = Color(0xFF191D2B)),
-        contentAlignment = Alignment.Center
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
+            modifier = Modifier
+                .width(430.dp)
+                .height(183.dp)
+                .background(color = Color(0xFF191D2B)),
         ) {
-            Text(
-                text = text,
-                fontSize = 48.sp,
-                fontWeight = FontWeight(400),
-            )
             Image(
                 painter = painterResource(id = R.drawable._223),
                 contentDescription = "Descripción de la imagen",
                 contentScale = ContentScale.FillBounds,
-                modifier = Modifier.size(300.dp)
+                modifier = Modifier.size(60.dp)
 
             )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            )
+            {
+                Box(
+                    modifier = Modifier
+                        .padding(top = 60.dp)
+                        .background(color = Color(0xFF191D2B)),
+                    contentAlignment = Alignment.Center
+
+                )
+                {
+                    Text(
+                        text = text,
+                        fontSize = 48.sp,
+                        fontWeight = FontWeight(400)
+                    )
+                }
+            }
         }
+
+        HomeBody()
     }
+
 }
