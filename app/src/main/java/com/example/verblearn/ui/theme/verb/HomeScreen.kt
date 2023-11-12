@@ -63,8 +63,8 @@ fun HomeBody() {
                 Text(
                     text = "Recent verbs",
                     style = TextStyle(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight(400),
                     )
                 )
             }
