@@ -47,12 +47,6 @@ fun HeaderScreen() {
         .toAnnotatedString()
 
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
         Box(
             modifier = Modifier
                 .width(430.dp)
@@ -89,8 +83,5 @@ fun HeaderScreen() {
                 }
             }
         }
-
-        HomeBody()
-    }
 
 }
