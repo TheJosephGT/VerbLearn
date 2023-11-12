@@ -152,6 +152,7 @@ fun HomeScreen() {
                 }
             }
         }
+
         homeBody()
     }
 
