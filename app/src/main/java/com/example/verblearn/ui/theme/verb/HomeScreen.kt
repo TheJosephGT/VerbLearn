@@ -132,7 +132,6 @@ fun HomeBody() {
             }
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
