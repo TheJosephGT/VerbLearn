@@ -54,7 +54,7 @@ fun HomeBody() {
                         .padding(8.dp)
                 )
                 {
-                    CustomOutlinedTextField(
+                    SearchTextField(
                         value = "",
                         onValueChange = { },
                         label = "Txt",
@@ -136,7 +136,7 @@ fun HomeBody() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomOutlinedTextField(
+fun SearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
@@ -158,5 +158,21 @@ fun CustomOutlinedTextField(
                 contentDescription = "Icono hacia la derecha"
             )
         }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier.width(350.dp),
+        label = { Text(text = label) },
+        singleLine = true
     )
 }
