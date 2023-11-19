@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.verblearn.util.SearchTextField
 
 @Composable
-fun HomeBody() {
+fun HomeScreen() {
 
     val colorCard = Color(0x57D9DDEA)
     Column(

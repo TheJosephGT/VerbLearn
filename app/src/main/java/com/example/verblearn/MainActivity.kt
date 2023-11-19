@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.verblearn.ui.theme.VerbLearnTheme
+import com.example.verblearn.ui.theme.navigation.AppScreen
+import com.example.verblearn.ui.theme.verb.HomeScreen
 import com.example.verblearn.ui.theme.verb.SupportScreen
 import com.example.verblearn.ui.theme.viewModel.Consult
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
@@ -50,20 +52,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen()
+                    AppScreen()
                 }
             }
         }
-    }
-}
-
-@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
-@Composable
-fun Screen(viewModel: VerbViewModel = hiltViewModel()){
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    uiState.verbs?.let { verb ->
-        Consult(verb)
     }
 }
 
