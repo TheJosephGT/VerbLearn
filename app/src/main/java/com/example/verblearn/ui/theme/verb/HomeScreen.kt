@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.verblearn.util.SearchTextField
 
 @Composable
 fun HomeBody() {
@@ -132,47 +133,4 @@ fun HomeBody() {
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String,
-    isError: Boolean,
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier.width(350.dp),
-        label = { Text(text = label) },
-        singleLine = true,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = if (isError) Color.Gray else Color.Red,
-            unfocusedBorderColor = if (isError) Color.Gray else Color.Red
-        ),
-        trailingIcon = {
-            Icon(
-                Icons.Default.ArrowForward,
-                contentDescription = "Icono hacia la derecha"
-            )
-        }
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CustomOutlinedTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier.width(350.dp),
-        label = { Text(text = label) },
-        singleLine = true
-    )
 }
