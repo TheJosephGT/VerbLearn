@@ -51,6 +51,7 @@ fun AppScreen() {
     )
 }
 
+
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = hiltViewModel()) {
@@ -86,11 +87,9 @@ fun BottomNavigationBar(navController: NavController, appItems: List<Destination
             items(appItems) { appitem ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .clickable {
-                            navController.navigate(appitem.route)
-                        }
-                        .padding(horizontal = 15.dp)
+                    modifier = Modifier.clickable {
+                        navController.navigate(appitem.route)
+                    }.padding(horizontal =33.dp)
                 ) {
                     Icon(
                         imageVector = appitem.icon,
