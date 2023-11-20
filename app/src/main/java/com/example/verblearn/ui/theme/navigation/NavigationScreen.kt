@@ -1,5 +1,7 @@
 package com.example.verblearn.ui.theme.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,11 +29,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.verblearn.R
+import com.example.verblearn.Screen
 import com.example.verblearn.ui.theme.verb.FavoriteScreen
 import com.example.verblearn.ui.theme.verb.HomeScreen
 import com.example.verblearn.ui.theme.verb.SupportScreen
+import com.example.verblearn.ui.theme.verb.TranslateScreen
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppScreen() {
@@ -46,17 +51,23 @@ fun AppScreen() {
     )
 }
 
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = hiltViewModel()) {
     NavHost(navController, startDestination = Destination.Home.route) {
         composable(Destination.Home.route) {
-            HomeScreen()
+            HomeScreen(navController)
         }
         composable(Destination.Support.route) {
-            SupportScreen()
+            Screen()
+            //SupportScreen()
         }
         composable(Destination.Favorites.route) {
             FavoriteScreen()
+        }
+        composable("${Destination.Translate.route}/{searchedVerb}") { backStackEntry ->
+            val searchedVerb = backStackEntry.arguments?.getString("searchedVerb") ?: ""
+            TranslateScreen(searchedVerb)
         }
     }
 }
@@ -75,9 +86,11 @@ fun BottomNavigationBar(navController: NavController, appItems: List<Destination
             items(appItems) { appitem ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.clickable {
-                        navController.navigate(appitem.route)
-                    }.padding(horizontal = 15.dp)
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate(appitem.route)
+                        }
+                        .padding(horizontal = 15.dp)
                 ) {
                     Icon(
                         imageVector = appitem.icon,

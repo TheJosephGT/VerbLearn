@@ -52,10 +52,21 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    Screen()
                     AppScreen()
                 }
             }
         }
+    }
+}
+
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
+@Composable
+fun Screen(viewModel: VerbViewModel = hiltViewModel()){
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    uiState.verbs?.let { verb ->
+        Consult(verb)
     }
 }
 

@@ -1,5 +1,6 @@
 package com.example.verblearn.ui.theme.verb
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,9 +24,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.verblearn.R
 
-@Preview(showBackground = true, showSystemUi = true)
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun HeaderScreen() {
     val color = Color(0xFF65D0F2)

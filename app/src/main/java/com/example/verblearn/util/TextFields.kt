@@ -1,5 +1,6 @@
 package com.example.verblearn.util
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -19,7 +21,8 @@ fun SearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    isError: Boolean,
+    navController: NavController,
+    onVerbClick: (String) -> Unit
 ) {
     OutlinedTextField(
         value = value,
@@ -27,14 +30,11 @@ fun SearchTextField(
         modifier = Modifier.width(350.dp),
         label = { Text(text = label) },
         singleLine = true,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = if (isError) Color.Gray else Color.Red,
-            unfocusedBorderColor = if (isError) Color.Gray else Color.Red
-        ),
         trailingIcon = {
             Icon(
                 Icons.Default.ArrowForward,
-                contentDescription = "Icono hacia la derecha"
+                contentDescription = "Icono hacia la derecha",
+                Modifier.clickable(onClick = {onVerbClick(value)})
             )
         }
     )

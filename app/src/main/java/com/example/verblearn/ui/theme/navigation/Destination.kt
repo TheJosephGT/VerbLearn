@@ -21,6 +21,11 @@ sealed class Destination(val route: String, val icon: ImageVector, val title: St
         title = "Favorites"
     )
 
+    object Translate : Destination(
+        route = "Translate", icon = Icons.Filled.Email,
+        title = "Translate"
+    )
+
     companion object {
         val toList = listOf(Support, Home, Favorites)
     }
