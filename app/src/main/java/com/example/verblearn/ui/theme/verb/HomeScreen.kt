@@ -82,7 +82,7 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                             value = searchedVerb,
                             onValueChange = {searchedVerb = it},
                             modifier = Modifier.width(350.dp),
-                            label = { Text(text = "Enter the verb") },
+                            label = { Text(text = "Type the verb") },
                             singleLine = true,
                             trailingIcon = {
                                 Icon(
