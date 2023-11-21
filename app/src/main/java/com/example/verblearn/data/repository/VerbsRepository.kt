@@ -28,19 +28,8 @@ class VerbsRepository @Inject constructor(private val api: VerbsAPI) {
         }
     }
 
-    fun getVerbsById(id: Int): Flow<Resource<VerbsDTO>> = flow {
-        try {
-            emit(Resource.Loading())
-
-            val verb =
-                api.getVerbsById(id)
-
-            emit(Resource.Success(verb))
-        } catch (e: HttpException) {
-            emit(Resource.Error(e.message ?: "Error HTTP"))
-        } catch (e: IOException) {
-            emit(Resource.Error(e.message ?: "verificar tu conexion a internet"))
-        }
+    suspend fun getVerbsById(id: Int): VerbsDTO? {
+        return api.getVerbsById(id)
     }
 
     suspend fun postVerb(verb: VerbsDTO) = api.postVerbs(verb)

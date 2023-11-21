@@ -12,7 +12,7 @@ interface VerbsAPI {
     suspend fun getVerbs():List<VerbsDTO>
 
     @GET("api/Verbs/{id}")
-    suspend fun getVerbsById(@Path("id") id: Int): VerbsDTO
+    suspend fun getVerbsById(@Path("id") id: Int): VerbsDTO?
 
     @POST("api/Verbs")
     suspend fun postVerbs(@Body verb: VerbsDTO) : Response<VerbsDTO>

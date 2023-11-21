@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -33,18 +34,23 @@ data class VerbListState(
     val verb: VerbsDTO? = null,
     val error: String = "",
 )
-
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @HiltViewModel
 class VerbViewModel @Inject constructor(
     private val verbsRepository: VerbsRepository,
 ) : ViewModel() {
-    var id by mutableStateOf(0)
+    var verb by mutableStateOf(VerbsDTO())
+    var idVerb by mutableStateOf(0)
     var baseForm by mutableStateOf("")
     var pastParticiple by mutableStateOf("")
     var simplePast by mutableStateOf("")
     var definition by mutableStateOf("")
 
+    var spanishBaseForm by mutableStateOf("")
+    var spanishPastParticiple by mutableStateOf("")
+    var spanishSimplePast by mutableStateOf("")
+    var definitionInSpanish by mutableStateOf("")
+    var verbProposal by mutableStateOf("")
 
     private val _uiState = MutableStateFlow(VerbListState())
     val uiState: StateFlow<VerbListState> = _uiState.asStateFlow()
@@ -73,27 +79,11 @@ class VerbViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun searchVerb(searchedVerb: String): VerbsDTO? {
-        val lowerCaseSearchedVerb = searchedVerb.lowercase()
-
-        _uiState.update { it.copy(isLoading = true) }
-        val foundVerb = uiState.value.verbs.find { verb ->
-            verb.baseForm.lowercase() == lowerCaseSearchedVerb ||
-                    verb.pastParticiple.lowercase() == lowerCaseSearchedVerb ||
-                    verb.simplePast.lowercase() == lowerCaseSearchedVerb
+    fun getVerbById(id: Int) {
+        viewModelScope.launch {
+            verb = verbsRepository.getVerbsById(id)!!
         }
-
-
-        _uiState.update { it.copy(verb = foundVerb, isLoading = false) }
-
-
-        if (foundVerb != null) {
-            println("FUE ENCONTRADO: ${foundVerb!!.baseForm}")
-        } else {
-            println("No se encontró")
-        }
-
-        return foundVerb
     }
+
 
 }

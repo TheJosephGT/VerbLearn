@@ -31,14 +31,15 @@ fun Consult(verbs: List<VerbsDTO>) {
 
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(verbs) { verb ->
-                DocumentoItem(verb)
+                if(verb.baseForm == "Run" || verb.simplePast == "Run" || verb.pastParticiple == "Run")
+                    VerbItem(verb)
             }
         }
     }
 }
 
 @Composable
-fun DocumentoItem(verb: VerbsDTO, viewModel: VerbViewModel = hiltViewModel()) {
+fun VerbItem(verb: VerbsDTO, viewModel: VerbViewModel = hiltViewModel()) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

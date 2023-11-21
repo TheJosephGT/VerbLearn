@@ -1,6 +1,8 @@
 package com.example.verblearn.ui.theme.verb
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +24,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,19 +34,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.verblearn.ui.theme.navigation.Destination
-import com.example.verblearn.util.SearchTextField
+import com.example.verblearn.ui.theme.viewModel.VerbViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @SuppressLint("UnrememberedMutableState", "UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltViewModel()) {
     var searchedVerb by mutableStateOf("")
     val snackbarHostState = remember { SnackbarHostState() }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val colorCard = Color(0x57D9DDEA)
     Scaffold(
@@ -83,7 +88,10 @@ fun HomeScreen(navController: NavController) {
                                 Icon(
                                     Icons.Default.ArrowForward,
                                     contentDescription = "Icono hacia la derecha",
-                                    Modifier.clickable(onClick = {navController.navigate("${Destination.Translate.route}/$searchedVerb")})
+                                    Modifier.clickable(onClick = {navController.navigate("${Destination.Translate.route}/${uiState.verbs.singleOrNull{ 
+                                            verb -> verb.baseForm.lowercase() == searchedVerb.lowercase() ||
+                                            verb.pastParticiple.lowercase() == searchedVerb.lowercase() ||
+                                            verb.simplePast.lowercase() == searchedVerb.lowercase()}?.id}")})
                                 )
                             }
                         )
@@ -125,7 +133,7 @@ fun HomeScreen(navController: NavController) {
                     {
                         Row {
                             Text(
-                                text = "Bass form",
+                                text = "Base form",
                                 style = TextStyle(
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight(400),
@@ -147,7 +155,7 @@ fun HomeScreen(navController: NavController) {
                             Spacer(modifier = Modifier.width(38.dp))
 
                             Text(
-                                text = "Simple pass",
+                                text = "Simple past",
                                 style = TextStyle(
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight(400),
@@ -161,3 +169,4 @@ fun HomeScreen(navController: NavController) {
         }
     }
 }
+

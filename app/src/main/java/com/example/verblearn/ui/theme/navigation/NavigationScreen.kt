@@ -23,16 +23,16 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.verblearn.R
 import com.example.verblearn.Screen
 import com.example.verblearn.ui.theme.verb.FavoriteScreen
 import com.example.verblearn.ui.theme.verb.HomeScreen
-import com.example.verblearn.ui.theme.verb.SupportScreen
 import com.example.verblearn.ui.theme.verb.TranslateScreen
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 
@@ -66,9 +66,15 @@ fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = h
         composable(Destination.Favorites.route) {
             FavoriteScreen()
         }
-        composable("${Destination.Translate.route}/{searchedVerb}") { backStackEntry ->
-            val searchedVerb = backStackEntry.arguments?.getString("searchedVerb") ?: ""
-            TranslateScreen(searchedVerb)
+        composable("${Destination.Translate.route}/{id}",
+            arguments = listOf(navArgument("id"){type = NavType.IntType})
+        ) { capturar ->
+            val id = capturar.arguments?.getInt("id") ?: 0
+
+            println("El id e $id")
+            
+            TranslateScreen(idVerb = id)
+            
         }
     }
 }
@@ -87,9 +93,11 @@ fun BottomNavigationBar(navController: NavController, appItems: List<Destination
             items(appItems) { appitem ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.clickable {
-                        navController.navigate(appitem.route)
-                    }.padding(horizontal =33.dp)
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate(appitem.route)
+                        }
+                        .padding(horizontal = 33.dp)
                 ) {
                     Icon(
                         imageVector = appitem.icon,
