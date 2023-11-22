@@ -1,6 +1,8 @@
 package com.example.verblearn.ui.theme.verb
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresExtension
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +26,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,14 +37,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.widget.NestedScrollView
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 import com.example.verblearn.util.CustomOutlinedTextField
 
+@RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun SupportScreen() {
+fun SupportScreen(viewModel: VerbViewModel = hiltViewModel()) {
 
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val scrollState = rememberScrollState()
 
@@ -62,7 +69,8 @@ fun SupportScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
-                    .verticalScroll(scrollState).height(700.dp)
+                    .verticalScroll(scrollState)
+                    .height(550.dp)
 
             )
             {
@@ -82,10 +90,18 @@ fun SupportScreen() {
                     )
                     {
                         CustomOutlinedTextField(
-                            value = "",
-                            onValueChange = { },
+                            value = viewModel.baseForm,
+                            onValueChange = { viewModel.baseForm = it },
                             label = "Bass form"
                         )
+                        if (viewModel.verificarBassForm == false) {
+                            Text(
+                                text = "This field is required.",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+
+                        }
                     }
 
                     Spacer(modifier = Modifier.width(10.dp))
@@ -96,10 +112,17 @@ fun SupportScreen() {
                             .padding(8.dp)
                     ) {
                         CustomOutlinedTextField(
-                            value = "",
+                            value = viewModel.pastParticiple,
                             label = "Past participle",
-                            onValueChange = {},
+                            onValueChange = { viewModel.pastParticiple = it },
                         )
+                        if (viewModel.verificarPastParticiple == false) {
+                            Text(
+                                text = "This field is required.",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
                     }
                 }
 
@@ -111,10 +134,17 @@ fun SupportScreen() {
                     )
                     {
                         CustomOutlinedTextField(
-                            value = "",
-                            onValueChange = { },
+                            value = viewModel.simplePast,
+                            onValueChange = { viewModel.simplePast = it },
                             label = "Simple past"
                         )
+                        if (viewModel.verificarSimplePast == false) {
+                            Text(
+                                text = "This field is required.",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.width(10.dp))
@@ -125,10 +155,17 @@ fun SupportScreen() {
                             .padding(8.dp)
                     ) {
                         CustomOutlinedTextField(
-                            value = "",
+                            value = viewModel.spanishBaseForm,
                             label = "Spanish base form",
-                            onValueChange = {},
+                            onValueChange = { viewModel.spanishBaseForm = it },
                         )
+                        if (viewModel.verificarSpanishBaseForm == false) {
+                            Text(
+                                text = "This field is required.",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
                     }
                 }
                 Row {
@@ -139,25 +176,39 @@ fun SupportScreen() {
                     )
                     {
                         CustomOutlinedTextField(
-                            value = "",
-                            onValueChange = { },
+                            value = viewModel.spanishSimplePast,
+                            onValueChange = { viewModel.spanishSimplePast = it },
                             label = "Spanish simple past"
                         )
+                        if (viewModel.verificarSpanishSimplePast == false) {
+                            Text(
+                                text = "This field is required.",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
+
                     }
-
-                    Spacer(modifier = Modifier.width(10.dp))
-
                     Column(
                         modifier = Modifier
                             .weight(1f)
                             .padding(8.dp)
-                    ) {
+                    )
+                    {
                         CustomOutlinedTextField(
-                            value = "",
-                            label = "Spanish base form",
-                            onValueChange = {},
+                            value = viewModel.spanishPastParticiple,
+                            onValueChange = { viewModel.spanishPastParticiple = it },
+                            label = "Spanish Past Participle"
                         )
+                        if (viewModel.verificarPastParticiple == false) {
+                            Text(
+                                text = "This field is required.",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
                     }
+
                 }
 
                 Row {
@@ -168,10 +219,17 @@ fun SupportScreen() {
                     )
                     {
                         CustomOutlinedTextField(
-                            value = "",
-                            onValueChange = { },
+                            value = viewModel.definition,
+                            onValueChange = { viewModel.definition = it },
                             label = "Definition in english"
                         )
+                        if (viewModel.verificarDefinition == false) {
+                            Text(
+                                text = "This field is required.",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
                     }
                 }
                 Row {
@@ -182,12 +240,17 @@ fun SupportScreen() {
                     )
                     {
                         CustomOutlinedTextField(
-                            value = "",
-                            onValueChange = { },
+                            value = viewModel.definitionInSpanish,
+                            onValueChange = { viewModel.definitionInSpanish = it },
                             label = "Definition in spanish"
-
-
                         )
+                        if (viewModel.verificarDefinitionInSpanish == false) {
+                            Text(
+                                text = "This field is required.",
+                                color = Color.Red,
+                                fontSize = 12.sp
+                            )
+                        }
                     }
                 }
 
@@ -198,8 +261,10 @@ fun SupportScreen() {
                         .align(Alignment.CenterHorizontally)
                 ) {
                     Button(
-                        onClick = { /*
-                    TODO*/
+                        onClick = {
+                            if (viewModel.validar()) {
+                                viewModel.send()
+                            }
                         },
                         Modifier
                             .width(182.dp)

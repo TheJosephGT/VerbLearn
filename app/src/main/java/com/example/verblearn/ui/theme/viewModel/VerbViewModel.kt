@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -50,7 +49,19 @@ class VerbViewModel @Inject constructor(
     var spanishPastParticiple by mutableStateOf("")
     var spanishSimplePast by mutableStateOf("")
     var definitionInSpanish by mutableStateOf("")
-    var verbProposal by mutableStateOf("")
+    var verbProposal by mutableStateOf(true)
+
+    //validaciones
+
+    var verificarBassForm by mutableStateOf(true)
+    var verificarPastParticiple by mutableStateOf(true)
+    var verificarSimplePast by mutableStateOf(true)
+    var verificarDefinition by mutableStateOf(true)
+    var verificarSpanishBaseForm by mutableStateOf(true)
+    var verificarSpanishPastParticiple by mutableStateOf(true)
+    var verificarSpanishSimplePast by mutableStateOf(true)
+    var verificarDefinitionInSpanish by mutableStateOf(true)
+
 
     private val _uiState = MutableStateFlow(VerbListState())
     val uiState: StateFlow<VerbListState> = _uiState.asStateFlow()
@@ -84,6 +95,51 @@ class VerbViewModel @Inject constructor(
             verb = verbsRepository.getVerbsById(id)!!
         }
     }
+    fun send() {
+        viewModelScope.launch {
+            val verbs = VerbsDTO(
+                id = idVerb,
+                baseForm = baseForm,
+                pastParticiple = pastParticiple,
+                simplePast = simplePast,
+                definition = definition,
+                spanishBaseForm = spanishBaseForm,
+                spanishPastParticiple = spanishPastParticiple,
+                spanishSimplePast = spanishSimplePast,
+                definitionInSpanish = definitionInSpanish,
+                verbProposal = verbProposal
+            )
+            verbsRepository.postVerb(verbs)
+            clear()
+            cargar()
+        }
+    }
 
+    fun clear()
+    {
+        idVerb = 0
+        baseForm = ""
+        pastParticiple = ""
+        simplePast = ""
+        definition = ""
+        spanishBaseForm = ""
+        spanishPastParticiple = ""
+        spanishSimplePast = ""
+        definitionInSpanish = ""
+    }
+
+    fun validar() : Boolean
+    {
+        verificarBassForm = baseForm != ""
+        verificarPastParticiple = pastParticiple != ""
+        verificarSimplePast = simplePast != ""
+        verificarDefinition = definition != ""
+        verificarSpanishBaseForm = spanishBaseForm != ""
+        verificarSpanishPastParticiple = spanishPastParticiple != ""
+        verificarSpanishSimplePast = spanishSimplePast != ""
+        verificarDefinitionInSpanish = definitionInSpanish != ""
+
+        return !(baseForm == "" || pastParticiple == "" || simplePast == "" || definition == ""|| spanishBaseForm == "" ||spanishPastParticiple == "" || spanishSimplePast == "" || definitionInSpanish == "")
+    }
 
 }
