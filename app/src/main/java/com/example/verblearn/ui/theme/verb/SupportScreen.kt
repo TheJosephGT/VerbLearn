@@ -92,7 +92,7 @@ fun SupportScreen(viewModel: VerbViewModel = hiltViewModel()) {
                         CustomOutlinedTextField(
                             value = viewModel.baseForm,
                             onValueChange = { viewModel.baseForm = it },
-                            label = "Bass form"
+                            label = "Base form"
                         )
                         if (viewModel.verificarBassForm == false) {
                             Text(
