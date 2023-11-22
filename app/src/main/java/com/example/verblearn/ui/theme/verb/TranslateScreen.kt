@@ -27,7 +27,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,12 +44,15 @@ import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 import kotlinx.coroutines.launch
 
 
-@SuppressLint("SuspiciousIndentation", "CoroutineCreationDuringComposition")
+@SuppressLint("SuspiciousIndentation", "CoroutineCreationDuringComposition",
+    "UnrememberedMutableState"
+)
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
     val colorCard = Color(0xFFFFFFFF)
     val ColorCardDefinition = Color(0x57D9DDEA)
+    var translateOn by mutableStateOf(false)
 
     DisposableEffect(Unit) {
         viewModel.getVerbById(idVerb)
@@ -105,8 +111,18 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                                 )
                             )
                             Spacer(modifier = Modifier.height(10.dp))
+                            Text(
+                                text = viewModel.verb.baseForm,
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight(400),
+                                    color = Color(0xFF000000),
+                                )
+                            )
+                            if(translateOn){
                                 Text(
-                                    text = viewModel.verb.baseForm,
+                                    text = "(${viewModel.verb.spanishBaseForm})",
                                     modifier = Modifier.align(Alignment.CenterHorizontally),
                                     style = TextStyle(
                                         fontSize = 16.sp,
@@ -114,7 +130,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                                         color = Color(0xFF000000),
                                     )
                                 )
-
+                            }
                         }
 
                         Spacer(modifier = Modifier.width(38.dp))
@@ -138,6 +154,17 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                                     color = Color(0xFF000000),
                                 )
                             )
+                            if(translateOn){
+                                Text(
+                                    text = "(${viewModel.verb.spanishPastParticiple})",
+                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight(400),
+                                        color = Color(0xFF000000),
+                                    )
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.width(38.dp))
@@ -162,6 +189,17 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                                     color = Color(0xFF000000),
                                 )
                             )
+                            if(translateOn){
+                                Text(
+                                    text = "(${viewModel.verb.spanishSimplePast})",
+                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                    style = TextStyle(
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight(400),
+                                        color = Color(0xFF000000),
+                                    )
+                                )
+                            }
                         }
                     }
 
@@ -176,9 +214,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                 {
                     val color = Color(0xFF191D2B)
                     Button(
-                        onClick = { /*
-                    TODO*/
-                        },
+                        onClick = { translateOn = !translateOn},
                         Modifier
                             .width(182.dp)
                             .height(50.dp),
@@ -189,14 +225,25 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                         )
                     )
                     {
-                        Text(
-                            text = "Translate",
-                            style = TextStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight(400),
-                                color = Color(0xFFFFFFFF),
+                        if(translateOn){
+                            Text(
+                                text = "Translate (OFF)",
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight(400),
+                                    color = Color(0xFFFFFFFF),
+                                )
                             )
-                        )
+                        }else{
+                            Text(
+                                text = "Translate (ON)",
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight(400),
+                                    color = Color(0xFFFFFFFF),
+                                )
+                            )
+                        }
                     }
 
                 }
@@ -252,30 +299,19 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                             color = Color(0xFF000000),
                         )
                     )
-
-                    Spacer(modifier = Modifier.height(50.dp))
-
-                    Text(
-                        text = "Example: ", fontWeight = FontWeight.Bold,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFF000000),
+                    if(translateOn){
+                        Text(
+                            text = "(${viewModel.verb.definitionInSpanish})",
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight(400),
+                                color = Color(0xFF000000),
+                            )
                         )
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        text = "(AQUI VA EL EXAMPLE): ",
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFF000000),
-                        )
-                    )
+                    }
                 }
             }
         }
     }
-    //   }
 }
