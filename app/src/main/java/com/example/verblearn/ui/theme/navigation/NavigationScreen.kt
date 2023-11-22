@@ -33,6 +33,7 @@ import com.example.verblearn.R
 import com.example.verblearn.Screen
 import com.example.verblearn.ui.theme.verb.FavoriteScreen
 import com.example.verblearn.ui.theme.verb.HomeScreen
+import com.example.verblearn.ui.theme.verb.SupportScreen
 import com.example.verblearn.ui.theme.verb.TranslateScreen
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 
@@ -60,8 +61,7 @@ fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = h
             HomeScreen(navController)
         }
         composable(Destination.Support.route) {
-            Screen()
-            //SupportScreen()
+            SupportScreen()
         }
         composable(Destination.Favorites.route) {
             FavoriteScreen()
@@ -71,8 +71,6 @@ fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = h
         ) { capturar ->
             val id = capturar.arguments?.getInt("id") ?: 0
 
-            println("El id e $id")
-            
             TranslateScreen(idVerb = id)
             
         }

@@ -51,6 +51,7 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
     var searchedVerb by mutableStateOf("")
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val verbNotFound = remember { mutableStateOf(false) }
 
     val colorCard = Color(0x57D9DDEA)
     Scaffold(
@@ -80,7 +81,7 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                     {
                         OutlinedTextField(
                             value = searchedVerb,
-                            onValueChange = {searchedVerb = it},
+                            onValueChange = { searchedVerb = it },
                             modifier = Modifier.width(350.dp),
                             label = { Text(text = "Type the verb") },
                             singleLine = true,
@@ -88,13 +89,25 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                                 Icon(
                                     Icons.Default.ArrowForward,
                                     contentDescription = "Icono hacia la derecha",
-                                    Modifier.clickable(onClick = {navController.navigate("${Destination.Translate.route}/${uiState.verbs.singleOrNull{ 
-                                            verb -> verb.baseForm.lowercase() == searchedVerb.lowercase() ||
-                                            verb.pastParticiple.lowercase() == searchedVerb.lowercase() ||
-                                            verb.simplePast.lowercase() == searchedVerb.lowercase()}?.id}")})
+                                    Modifier.clickable(onClick = {
+                                        val verb = uiState.verbs.singleOrNull {
+                                            it.baseForm.lowercase() == searchedVerb.lowercase() ||
+                                                    it.pastParticiple.lowercase() == searchedVerb.lowercase() ||
+                                                    it.simplePast.lowercase() == searchedVerb.lowercase()
+                                        }
+                                        if (verb != null) {
+                                            navController.navigate("${Destination.Translate.route}/${verb.id}")
+                                            verbNotFound.value = false
+                                        }else{
+                                            verbNotFound.value = true
+                                        }
+                                    })
                                 )
                             }
                         )
+                        if(verbNotFound.value){
+                            Text(text = "The verb to search is misspelled or is not found in the database", color = Color.Red)
+                        }
                     }
 
                 }
