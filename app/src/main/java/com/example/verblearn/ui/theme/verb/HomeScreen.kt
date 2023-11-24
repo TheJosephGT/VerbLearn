@@ -97,7 +97,7 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                                                     it.pastParticiple.lowercase() == searchedVerb.lowercase() ||
                                                     it.simplePast.lowercase() == searchedVerb.lowercase()
                                         }
-                                        if (verb != null) {
+                                        if (verb != null && !verb.verbProposal) {
                                             navController.navigate("${Destination.Translate.route}/${verb.id}")
                                             verbNotFound.value = false
                                         }else{
