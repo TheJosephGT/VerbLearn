@@ -20,6 +20,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,7 +53,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen()
                     AppScreen()
                 }
             }
@@ -63,10 +63,8 @@ class MainActivity : ComponentActivity() {
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun Screen(viewModel: VerbViewModel = hiltViewModel()){
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    uiState.verbs?.let { verb ->
-        Consult(verb)
-    }
+    val favorites by viewModel.favorites.collectAsState()
+    
+    Consult(verbs = favorites)
 }
 

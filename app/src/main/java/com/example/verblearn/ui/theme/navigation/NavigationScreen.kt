@@ -16,6 +16,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +37,7 @@ import com.example.verblearn.ui.theme.verb.FavoriteScreen
 import com.example.verblearn.ui.theme.verb.HomeScreen
 import com.example.verblearn.ui.theme.verb.SupportScreen
 import com.example.verblearn.ui.theme.verb.TranslateScreen
+import com.example.verblearn.ui.theme.viewModel.Consult
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
@@ -64,7 +67,8 @@ fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = h
             SupportScreen()
         }
         composable(Destination.Favorites.route) {
-            FavoriteScreen()
+            val favorites by viewModel.favorites.collectAsState()
+            FavoriteScreen(verbs = favorites, navController)
         }
         composable("${Destination.Translate.route}/{id}",
             arguments = listOf(navArgument("id"){type = NavType.IntType})

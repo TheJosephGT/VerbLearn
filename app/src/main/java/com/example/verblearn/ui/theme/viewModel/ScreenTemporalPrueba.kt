@@ -16,10 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.verblearn.data.local.entities.Favorite
 import com.example.verblearn.data.remote.dto.VerbsDTO
 
 @Composable
-fun Consult(verbs: List<VerbsDTO>) {
+fun Consult(verbs: List<Favorite>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,15 +32,14 @@ fun Consult(verbs: List<VerbsDTO>) {
 
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(verbs) { verb ->
-                if(verb.baseForm == "Run" || verb.simplePast == "Run" || verb.pastParticiple == "Run")
-                    VerbItem(verb)
+                VerbItem(verb)
             }
         }
     }
 }
 
 @Composable
-fun VerbItem(verb: VerbsDTO, viewModel: VerbViewModel = hiltViewModel()) {
+fun VerbItem(favorite: Favorite, viewModel: VerbViewModel = hiltViewModel()) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,9 +49,9 @@ fun VerbItem(verb: VerbsDTO, viewModel: VerbViewModel = hiltViewModel()) {
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text(text = "baseForm: " + verb.baseForm, style = MaterialTheme.typography.titleMedium)
-            Text(text = "pastParticiple: " + verb.pastParticiple, style = MaterialTheme.typography.titleMedium)
-            Text(text = "simplePast: " + verb.simplePast, style = MaterialTheme.typography.titleMedium)
+            Text(text = "baseForm: " + favorite.baseForm, style = MaterialTheme.typography.titleMedium)
+            Text(text = "pastParticiple: " + favorite.pastParticiple, style = MaterialTheme.typography.titleMedium)
+            Text(text = "simplePast: " + favorite.simplePast, style = MaterialTheme.typography.titleMedium)
         }
     }
 }
