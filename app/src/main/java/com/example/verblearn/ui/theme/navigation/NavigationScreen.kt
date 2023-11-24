@@ -59,6 +59,7 @@ fun AppScreen() {
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = hiltViewModel()) {
+
     NavHost(navController, startDestination = Destination.Home.route) {
         composable(Destination.Home.route) {
             HomeScreen(navController)
@@ -76,8 +77,9 @@ fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = h
             val id = capturar.arguments?.getInt("id") ?: 0
 
             TranslateScreen(idVerb = id)
-            
         }
+
+
     }
 }
 

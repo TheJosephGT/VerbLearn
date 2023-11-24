@@ -26,12 +26,14 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -58,7 +60,7 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
     val colorCard = Color(0x57D9DDEA)
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -100,15 +102,37 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                                         if (verb != null && !verb.verbProposal) {
                                             navController.navigate("${Destination.Translate.route}/${verb.id}")
                                             verbNotFound.value = false
-                                        }else{
+                                        } else {
                                             verbNotFound.value = true
                                         }
                                     })
                                 )
+                                Icon(
+                                    Icons.Default.ArrowForward,
+                                    contentDescription = "Icono hacia la derecha",
+                                    Modifier.clickable(onClick = {
+                                        val verb = uiState.verbs.singleOrNull {
+                                            it.baseForm.lowercase() == searchedVerb.lowercase() ||
+                                                    it.pastParticiple.lowercase() == searchedVerb.lowercase() ||
+                                                    it.simplePast.lowercase() == searchedVerb.lowercase()
+                                        }
+                                        if (verb != null && !verb.verbProposal) {
+                                            navController.navigate("${Destination.Translate.route}/${verb.id}")
+                                            verbNotFound.value = false
+                                        } else {
+                                            verbNotFound.value = true
+                                        }
+                                    })
+                                )
+
+
                             },
                         )
-                        if(verbNotFound.value){
-                            Text(text = "The verb to search is misspelled or is not found in the database", color = Color.Red)
+                        if (verbNotFound.value) {
+                            Text(
+                                text = "The verb to search is misspelled or is not found in the database",
+                                color = Color.Red
+                            )
                         }
                     }
 
