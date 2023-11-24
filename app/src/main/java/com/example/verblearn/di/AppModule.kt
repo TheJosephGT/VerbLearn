@@ -1,7 +1,10 @@
 package com.example.verblearn.di
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresExtension
+import androidx.room.Room
+import com.example.verblearn.data.local.Database
 import com.example.verblearn.data.remote.VerbsAPI
 import com.example.verblearn.data.repository.VerbsRepository
 import com.squareup.moshi.Moshi
@@ -9,6 +12,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -25,6 +29,18 @@ object AppModule {
             .add(KotlinJsonAdapterFactory())
             .build()
     }
+
+    @Provides
+    @Singleton
+    fun providesDatabase(@ApplicationContext appContext: Context) : Database =
+        Room.databaseBuilder(
+            appContext,
+            Database::class.java,
+            "Database.db"
+        ).fallbackToDestructiveMigration().build()
+
+    @Provides
+    fun provideFavorite(db : Database) = db.FavoriteDao()
 
     @Provides
     @Singleton

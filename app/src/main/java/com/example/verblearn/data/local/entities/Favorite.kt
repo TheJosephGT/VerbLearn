@@ -1,7 +1,13 @@
-package com.example.verblearn.data.remote.dto
+package com.example.verblearn.data.local.entities
 
-data class VerbsDTO (
-    val id: Int?=null,
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.verblearn.data.remote.dto.VerbsDTO
+
+@Entity(tableName = "Favorites")
+data class Favorite (
+    @PrimaryKey
+    val id:Int?=null,
     var baseForm:String="",
     var pastParticiple:String="",
     var simplePast:String="",
@@ -13,4 +19,6 @@ data class VerbsDTO (
     var spanishSimplePast:String="",
     var definitionInSpanish:String="",
     var verbProposal:Boolean=false,
+
+    var isFavorite:Boolean=false
 )

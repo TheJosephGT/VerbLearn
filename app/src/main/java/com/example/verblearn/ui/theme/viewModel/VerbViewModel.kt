@@ -8,6 +8,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
+import com.example.verblearn.data.local.FavoriteRepository
+import com.example.verblearn.data.local.entities.Favorite
 import com.example.verblearn.data.remote.dto.VerbsDTO
 import com.example.verblearn.data.repository.VerbsRepository
 import com.example.verblearn.util.Resource
@@ -37,6 +39,7 @@ data class VerbListState(
 @HiltViewModel
 class VerbViewModel @Inject constructor(
     private val verbsRepository: VerbsRepository,
+    private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
     var verb by mutableStateOf(VerbsDTO())
     var idVerb by mutableStateOf(0)
@@ -62,6 +65,11 @@ class VerbViewModel @Inject constructor(
     var verificarSpanishSimplePast by mutableStateOf(true)
     var verificarDefinitionInSpanish by mutableStateOf(true)
 
+    var favorites : StateFlow<List<Favorite>> = favoriteRepository.getAll().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = emptyList()
+    )
 
     private val _uiState = MutableStateFlow(VerbListState())
     val uiState: StateFlow<VerbListState> = _uiState.asStateFlow()
@@ -112,6 +120,41 @@ class VerbViewModel @Inject constructor(
             verbsRepository.postVerb(verbs)
             clear()
             cargar()
+        }
+    }
+
+    fun saveVerbAsAVerb(){
+        idVerb = verb.id!!
+        baseForm = verb.baseForm
+        pastParticiple = verb.pastParticiple
+        simplePast = verb.simplePast
+        definition = verb.definition
+        spanishBaseForm = verb.spanishBaseForm
+        spanishPastParticiple = verb.spanishPastParticiple
+        spanishSimplePast = verb.simplePast
+        definitionInSpanish = verb.definitionInSpanish
+        verbProposal = verb.verbProposal
+        viewModelScope.launch {
+            val Favorite = Favorite(
+                baseForm = baseForm,
+                pastParticiple = pastParticiple,
+                simplePast = simplePast,
+                definition = definition,
+                spanishBaseForm = spanishBaseForm,
+                spanishPastParticiple = spanishPastParticiple,
+                spanishSimplePast = spanishSimplePast,
+                definitionInSpanish = definitionInSpanish,
+                verbProposal = verbProposal,
+                isFavorite = true
+            )
+            favoriteRepository.save(Favorite)
+        }
+    }
+
+    fun deleteVerbAsAVerb(favorite: Favorite){
+        viewModelScope.launch {
+            favorite.isFavorite = false
+            favoriteRepository.delete(favorite)
         }
     }
 

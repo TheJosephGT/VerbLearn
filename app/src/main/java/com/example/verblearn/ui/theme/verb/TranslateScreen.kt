@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -27,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,7 +46,8 @@ import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 import kotlinx.coroutines.launch
 
 
-@SuppressLint("SuspiciousIndentation", "CoroutineCreationDuringComposition",
+@SuppressLint(
+    "SuspiciousIndentation", "CoroutineCreationDuringComposition",
     "UnrememberedMutableState"
 )
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
@@ -53,12 +56,19 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
     val colorCard = Color(0xFFFFFFFF)
     val ColorCardDefinition = Color(0x57D9DDEA)
     var translateOn by mutableStateOf(false)
+    val favorites by viewModel.favorites.collectAsState()
 
     DisposableEffect(Unit) {
         viewModel.getVerbById(idVerb)
         onDispose {
 
         }
+    }
+    var favoriteOn by mutableStateOf(false)
+
+    val currentFavorite = favorites.find { it.baseForm == viewModel.verb.baseForm }
+    if(currentFavorite != null){
+        favoriteOn = true
     }
 
     Column(
@@ -120,7 +130,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                                     color = Color(0xFF000000),
                                 )
                             )
-                            if(translateOn){
+                            if (translateOn) {
                                 Text(
                                     text = "(${viewModel.verb.spanishBaseForm})",
                                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -154,7 +164,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                                     color = Color(0xFF000000),
                                 )
                             )
-                            if(translateOn){
+                            if (translateOn) {
                                 Text(
                                     text = "(${viewModel.verb.spanishPastParticiple})",
                                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -189,7 +199,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                                     color = Color(0xFF000000),
                                 )
                             )
-                            if(translateOn){
+                            if (translateOn) {
                                 Text(
                                     text = "(${viewModel.verb.spanishSimplePast})",
                                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -214,7 +224,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                 {
                     val color = Color(0xFF191D2B)
                     Button(
-                        onClick = { translateOn = !translateOn},
+                        onClick = { translateOn = !translateOn },
                         Modifier
                             .width(182.dp)
                             .height(50.dp),
@@ -225,7 +235,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                         )
                     )
                     {
-                        if(translateOn){
+                        if (translateOn) {
                             Text(
                                 text = "Translate (OFF)",
                                 style = TextStyle(
@@ -234,7 +244,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                                     color = Color(0xFFFFFFFF),
                                 )
                             )
-                        }else{
+                        } else {
                             Text(
                                 text = "Translate (ON)",
                                 style = TextStyle(
@@ -245,20 +255,32 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                             )
                         }
                     }
-
                 }
                 Row {
                     Spacer(modifier = Modifier.width(330.dp))
 
                     IconButton(
-                        onClick = {
-                        },
+                        onClick = { favoriteOn = !favoriteOn },
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.StarBorder,
-                            contentDescription = "Favorite",
-                            modifier = Modifier.size(48.dp)
-                        )
+                        if (favoriteOn == true) {
+                            Icon(
+                                imageVector = Icons.Rounded.Star,
+                                contentDescription = "Favorite",
+                                modifier = Modifier.size(48.dp)
+                            )
+                            if (favorites.any { it.baseForm == viewModel.verb.baseForm } == false) {
+                                viewModel.saveVerbAsAVerb()
+                            }
+                        } else {
+                            Icon(
+                                imageVector = Icons.Filled.StarBorder,
+                                contentDescription = "Favorite",
+                                modifier = Modifier.size(48.dp)
+                            )
+                            if (currentFavorite != null) {
+                                viewModel.deleteVerbAsAVerb(currentFavorite)
+                            }
+                        }
                     }
                 }
 
@@ -299,7 +321,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                             color = Color(0xFF000000),
                         )
                     )
-                    if(translateOn){
+                    if (translateOn) {
                         Text(
                             text = "(${viewModel.verb.definitionInSpanish})",
                             modifier = Modifier.align(Alignment.CenterHorizontally),
