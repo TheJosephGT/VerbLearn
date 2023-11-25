@@ -35,6 +35,9 @@ Guarda tus verbos favoritos para acceder fácilmente a ellos en el futuro. ¡Per
 
 ![image](https://github.com/JorgeLT1/VerbLearn/assets/107946797/d263ed3c-2ff9-44cb-87b5-3ea0ecebb3c1)
 
+
+
+
 # Traducción:
 - Utiliza el switch de traducción para obtener la traducción al español.
 
