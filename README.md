@@ -32,12 +32,14 @@ Guarda tus verbos favoritos para acceder fácilmente a ellos en el futuro. ¡Per
 # Búsqueda de Verbos:
 - Ingresa el verbo en el campo de búsqueda.
 - Obtén las formas básicas y las definiciones.
+
+![image](https://github.com/JorgeLT1/VerbLearn/assets/107946797/d263ed3c-2ff9-44cb-87b5-3ea0ecebb3c1)
+
 # Traducción:
 - Utiliza el switch de traducción para obtener la traducción al español.
 
 
   
-![image](https://github.com/JorgeLT1/VerbLearn/assets/107946797/d263ed3c-2ff9-44cb-87b5-3ea0ecebb3c1)
 ![image](https://github.com/JorgeLT1/VerbLearn/assets/107946797/e5769e86-8d2b-4234-8a18-15bfaa5e4d1c)
 
 
