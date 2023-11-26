@@ -3,6 +3,7 @@ package com.example.verblearn.ui.theme.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarOutline
@@ -27,6 +28,12 @@ sealed class Destination(val route: String, val icon: ImageVector, val title: St
     object Translate : Destination(
         route = "Translate", icon = Icons.Filled.Email,
         title = "Translate"
+    )
+
+
+    object Splash : Destination(
+        route = "Splash", icon = Icons.Filled.Info,
+        title = "Splash"
     )
 
     companion object {

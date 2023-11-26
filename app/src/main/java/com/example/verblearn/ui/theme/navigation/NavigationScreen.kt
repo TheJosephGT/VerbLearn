@@ -1,7 +1,9 @@
 package com.example.verblearn.ui.theme.navigation
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresExtension
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,11 +31,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.verblearn.R
 import com.example.verblearn.ui.theme.verb.FavoriteScreen
 import com.example.verblearn.ui.theme.verb.HomeScreen
+import com.example.verblearn.ui.theme.verb.SplashScreen
 import com.example.verblearn.ui.theme.verb.SupportScreen
 import com.example.verblearn.ui.theme.verb.TranslateScreen
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
@@ -43,8 +47,14 @@ import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 @Composable
 fun AppScreen() {
     val navController = rememberNavController()
+    val currentDestination = navController.currentBackStackEntryAsState()
+
     Scaffold(
-        bottomBar = { BottomNavigationBar(navController = navController, appItems = Destination.toList) },
+        bottomBar = {
+            if (currentDestination.value?.destination?.route != Destination.Splash.route) {
+                BottomNavigationBar(navController = navController, appItems = Destination.toList)
+            }
+        },
         content = { padding ->
             Box(modifier = Modifier.padding(padding)) {
                 AppNavigation(navController = navController)
@@ -53,12 +63,14 @@ fun AppScreen() {
     )
 }
 
-
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = hiltViewModel()) {
 
-    NavHost(navController, startDestination = Destination.Home.route) {
+    NavHost(navController, startDestination = Destination.Splash.route) {
+        composable(Destination.Splash.route) {
+            SplashScreen(navController)
+        }
         composable(Destination.Home.route) {
             HomeScreen(navController)
         }

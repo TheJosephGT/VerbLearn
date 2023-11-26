@@ -98,7 +98,4 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("io.coil-kt:coil-compose:1.3.2")
-
-    implementation ("com.google.code.gson:gson:2.10.1")
-
 }
