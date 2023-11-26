@@ -3,7 +3,11 @@ package com.example.verblearn.ui.theme.navigation
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresExtension
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -67,7 +72,14 @@ fun AppScreen() {
 @Composable
 fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = hiltViewModel()) {
 
-    NavHost(navController, startDestination = Destination.Splash.route) {
+    NavHost(
+        navController,
+        startDestination = Destination.Splash.route,
+        enterTransition = { fadeIn(animationSpec = tween(1000)) },
+        exitTransition = { fadeOut(animationSpec = tween(1000)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
+        popExitTransition = { fadeOut(animationSpec = tween(1000)) },
+    ) {
         composable(Destination.Splash.route) {
             SplashScreen(navController)
         }
@@ -81,8 +93,9 @@ fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = h
             val favorites by viewModel.favorites.collectAsState()
             FavoriteScreen(verbs = favorites, navController)
         }
-        composable("${Destination.Translate.route}/{id}",
-            arguments = listOf(navArgument("id"){type = NavType.IntType})
+        composable(
+            "${Destination.Translate.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
         ) { capturar ->
             val id = capturar.arguments?.getInt("id") ?: 0
 
