@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -27,6 +29,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,7 +60,6 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val verbNotFound = remember { mutableStateOf(false) }
 
-    val colorCard = Color(0x57D9DDEA)
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) {
@@ -107,99 +109,12 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                                         }
                                     })
                                 )
-                                Icon(
-                                    Icons.Default.ArrowForward,
-                                    contentDescription = "Icono hacia la derecha",
-                                    Modifier.clickable(onClick = {
-                                        val verb = uiState.verbs.singleOrNull {
-                                            it.baseForm.lowercase() == searchedVerb.lowercase() ||
-                                                    it.pastParticiple.lowercase() == searchedVerb.lowercase() ||
-                                                    it.simplePast.lowercase() == searchedVerb.lowercase()
-                                        }
-                                        if (verb != null && !verb.verbProposal) {
-                                            navController.navigate("${Destination.Translate.route}/${verb.id}")
-                                            verbNotFound.value = false
-                                        } else {
-                                            verbNotFound.value = true
-                                        }
-                                    })
-                                )
-
-
                             },
                         )
                         if (verbNotFound.value) {
                             Text(
                                 text = "The verb to search is misspelled or is not found in the database",
                                 color = Color.Red
-                            )
-                        }
-                    }
-
-                }
-
-                Row {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-                    )
-                    {
-                        Text(
-                            text = "Recent verbs",
-                            style = TextStyle(
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight(400),
-                            )
-                        )
-                    }
-                }
-
-                Card(
-                    modifier =
-                    Modifier
-                        .width(366.49536.dp)
-                        .height(314.18869.dp)
-                        .align(Alignment.CenterHorizontally),
-                    colors = CardDefaults.cardColors(containerColor = colorCard)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-                            .align(Alignment.CenterHorizontally)
-                    )
-                    {
-                        Row {
-                            Text(
-                                text = "Base form",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight(400),
-                                    color = Color(0xFF000000),
-                                )
-                            )
-
-                            Spacer(modifier = Modifier.width(38.dp))
-
-                            Text(
-                                text = "Past participle",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight(400),
-                                    color = Color(0xFF000000),
-                                )
-                            )
-
-                            Spacer(modifier = Modifier.width(38.dp))
-
-                            Text(
-                                text = "Simple past",
-                                style = TextStyle(
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight(400),
-                                    color = Color(0xFF000000),
-                                )
                             )
                         }
                     }

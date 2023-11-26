@@ -47,8 +47,6 @@ import com.example.verblearn.util.CustomOutlinedTextField
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SupportScreen(viewModel: VerbViewModel = hiltViewModel()) {
-
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val scrollState = rememberScrollState()
 
@@ -289,6 +287,4 @@ fun SupportScreen(viewModel: VerbViewModel = hiltViewModel()) {
             }
         }
     }
-
-
 }

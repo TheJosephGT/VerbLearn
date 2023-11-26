@@ -6,9 +6,10 @@ import com.example.verblearn.data.local.dao.FavoriteDao
 import com.example.verblearn.data.local.entities.Favorite
 
 
+
 @Database(
     entities = [Favorite::class],
-    version = 3
+    version = 8
 )
 abstract class Database : RoomDatabase() {
     abstract fun FavoriteDao() : FavoriteDao

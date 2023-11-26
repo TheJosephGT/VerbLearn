@@ -66,7 +66,7 @@ fun FavoriteScreen(verbs: List<Favorite>, navController: NavController, viewMode
                 )
                 {
                     Text(
-                        text = "Favorite",
+                        text = "Favorites",
                         style = TextStyle(
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,

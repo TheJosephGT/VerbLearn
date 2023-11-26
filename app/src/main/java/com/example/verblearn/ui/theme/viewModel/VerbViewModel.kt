@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.example.verblearn.data.local.FavoriteRepository
 import com.example.verblearn.data.local.entities.Favorite
@@ -14,18 +13,15 @@ import com.example.verblearn.data.remote.dto.VerbsDTO
 import com.example.verblearn.data.repository.VerbsRepository
 import com.example.verblearn.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
 import javax.inject.Inject
 
 
@@ -39,7 +35,7 @@ data class VerbListState(
 @HiltViewModel
 class VerbViewModel @Inject constructor(
     private val verbsRepository: VerbsRepository,
-    private val favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository,
 ) : ViewModel() {
     var verb by mutableStateOf(VerbsDTO())
     var idVerb by mutableStateOf(0)
@@ -123,28 +119,18 @@ class VerbViewModel @Inject constructor(
         }
     }
 
-    fun saveVerbAsAVerb(){
-        idVerb = verb.id!!
-        baseForm = verb.baseForm
-        pastParticiple = verb.pastParticiple
-        simplePast = verb.simplePast
-        definition = verb.definition
-        spanishBaseForm = verb.spanishBaseForm
-        spanishPastParticiple = verb.spanishPastParticiple
-        spanishSimplePast = verb.simplePast
-        definitionInSpanish = verb.definitionInSpanish
-        verbProposal = verb.verbProposal
+    fun saveVerbAsFavorite(verb: VerbsDTO){
         viewModelScope.launch {
             val Favorite = Favorite(
-                baseForm = baseForm,
-                pastParticiple = pastParticiple,
-                simplePast = simplePast,
-                definition = definition,
-                spanishBaseForm = spanishBaseForm,
-                spanishPastParticiple = spanishPastParticiple,
-                spanishSimplePast = spanishSimplePast,
-                definitionInSpanish = definitionInSpanish,
-                verbProposal = verbProposal,
+                baseForm = verb.baseForm,
+                pastParticiple = verb.pastParticiple,
+                simplePast = verb.simplePast,
+                definition = verb.definition,
+                spanishBaseForm = verb.spanishBaseForm,
+                spanishPastParticiple = verb.spanishPastParticiple,
+                spanishSimplePast = verb.spanishSimplePast,
+                definitionInSpanish = verb.definitionInSpanish,
+                verbProposal = verb.verbProposal,
                 isFavorite = true
             )
             favoriteRepository.save(Favorite)

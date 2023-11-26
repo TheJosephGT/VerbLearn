@@ -20,8 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -35,20 +33,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role.Companion.Switch
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.verblearn.data.remote.dto.VerbsDTO
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
-import kotlinx.coroutines.launch
 
 
 @SuppressLint(
@@ -59,24 +53,21 @@ import kotlinx.coroutines.launch
 @Composable
 fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
     val colorCard = Color(0xFFFFFFFF)
-    val ColorCardDefinition = Color(0x57D9DDEA)
+    val colorCardDefinition = Color(0x57D9DDEA)
     var translateOn by mutableStateOf(false)
     val favorites by viewModel.favorites.collectAsState()
-    var checked by remember { mutableStateOf(true) }
-
 
     DisposableEffect(Unit) {
         viewModel.getVerbById(idVerb)
-        onDispose {
-
-        }
+        onDispose {}
     }
-    var favoriteOn by mutableStateOf(false)
 
+    var favoriteOn by mutableStateOf(false)
     val currentFavorite = favorites.find { it.baseForm == viewModel.verb.baseForm }
     if (currentFavorite != null) {
         favoriteOn = true
     }
+
 
     Column(
         modifier = Modifier
@@ -219,7 +210,6 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                             }
                         }
                     }
-
                 }
                 Column(
                     modifier = Modifier
@@ -253,14 +243,14 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                     IconButton(
                         onClick = { favoriteOn = !favoriteOn },
                     ) {
-                        if (favoriteOn == true) {
+                        if (favoriteOn) {
                             Icon(
                                 imageVector = Icons.Rounded.Star,
                                 contentDescription = "Favorite",
                                 modifier = Modifier.size(48.dp)
                             )
-                            if (favorites.any { it.baseForm == viewModel.verb.baseForm } == false) {
-                                viewModel.saveVerbAsAVerb()
+                            if (currentFavorite == null) {
+                                viewModel.saveVerbAsFavorite(viewModel.verb)
                             }
                         } else {
                             Icon(
@@ -284,7 +274,7 @@ fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
                     .padding(0.5.dp)
                     .width(401.dp)
                     .height(230.dp),
-                colors = CardDefaults.cardColors(containerColor = ColorCardDefinition)
+                colors = CardDefaults.cardColors(containerColor = colorCardDefinition)
 
             )
             {
