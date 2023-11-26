@@ -3,6 +3,7 @@ package com.example.verblearn.ui.theme.verb
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresExtension
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,7 +39,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -46,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.verblearn.R
 import com.example.verblearn.ui.theme.navigation.Destination
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -119,6 +125,21 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                         }
                     }
                 }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize().padding(60.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable._223),
+                        contentDescription = "Descripción de la imagen",
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier.size(220.dp)
+
+                    )
+                }
+
             }
         }
     }
