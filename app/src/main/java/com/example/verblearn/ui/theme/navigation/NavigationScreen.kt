@@ -75,10 +75,10 @@ fun AppNavigation(navController: NavHostController, viewModel: VerbViewModel = h
     NavHost(
         navController,
         startDestination = Destination.Splash.route,
-        enterTransition = { fadeIn(animationSpec = tween(1000)) },
-        exitTransition = { fadeOut(animationSpec = tween(1000)) },
-        popEnterTransition = { fadeIn(animationSpec = tween(1000)) },
-        popExitTransition = { fadeOut(animationSpec = tween(1000)) },
+        enterTransition = { fadeIn(animationSpec = tween(500)) },
+        exitTransition = { fadeOut(animationSpec = tween(500)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(500)) },
+        popExitTransition = { fadeOut(animationSpec = tween(500)) },
     ) {
         composable(Destination.Splash.route) {
             SplashScreen(navController)
