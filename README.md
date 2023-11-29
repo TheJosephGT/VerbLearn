@@ -2,6 +2,8 @@
 
 ¡Bienvenido a nuestra aplicación de Verbos en Inglés!
 
+API: http://www.verblearnapi.somee.com/swagger/index.html
+
 # Descripción
 
 Esta aplicación móvil te ofrece una manera fácil y rápida de buscar información detallada sobre verbos en inglés. Puedes obtener 
@@ -33,7 +35,8 @@ Guarda tus verbos favoritos para acceder fácilmente a ellos en el futuro. ¡Per
 - Ingresa el verbo en el campo de búsqueda.
 - Obtén las formas básicas y las definiciones.
 
-![image](https://github.com/JorgeLT1/VerbLearn/assets/107946797/d263ed3c-2ff9-44cb-87b5-3ea0ecebb3c1)
+![image](https://github.com/JorgeLT1/VerbLearn/assets/122744896/719e578a-de4e-4170-92e8-ca4e91a7dd2b)
+
 
 
 
