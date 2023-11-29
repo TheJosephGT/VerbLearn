@@ -112,7 +112,10 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                                         val verb = uiState.verbs.singleOrNull {
                                             it.baseForm.lowercase() == searchedVerb.lowercase() ||
                                                     it.pastParticiple.lowercase() == searchedVerb.lowercase() ||
-                                                    it.simplePast.lowercase() == searchedVerb.lowercase()
+                                                    it.simplePast.lowercase() == searchedVerb.lowercase() ||
+                                                    it.spanishBaseForm.lowercase() == searchedVerb.lowercase() ||
+                                                    it.spanishPastParticiple.lowercase() == searchedVerb.lowercase() ||
+                                                    it.spanishSimplePast.lowercase() == searchedVerb.lowercase()
                                         }
                                         if (verb != null && !verb.verbProposal) {
                                             navController.navigate("${Destination.Translate.route}/${verb.id}")
@@ -151,4 +154,3 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
         }
     }
 }
-
