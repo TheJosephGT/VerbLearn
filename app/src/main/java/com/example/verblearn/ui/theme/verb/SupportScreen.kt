@@ -68,7 +68,7 @@ fun SupportScreen(viewModel: VerbViewModel = hiltViewModel()) {
                     .fillMaxWidth()
                     .padding(8.dp)
                     .verticalScroll(scrollState)
-                    .height(550.dp)
+                    .height(620.dp)
 
             )
             {
