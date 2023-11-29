@@ -198,7 +198,7 @@ fun SupportScreen(viewModel: VerbViewModel = hiltViewModel()) {
                             onValueChange = { viewModel.spanishPastParticiple = it },
                             label = "Spanish Past Participle"
                         )
-                        if (viewModel.verificarPastParticiple == false) {
+                        if (viewModel.verificarSpanishPastParticiple == false) {
                             Text(
                                 text = "This field is required.",
                                 color = Color.Red,
