@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -28,11 +29,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -72,6 +75,7 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val verbNotFound = remember { mutableStateOf(false) }
+    var active by remember { mutableStateOf(false) }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -98,7 +102,92 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                             .padding(8.dp)
                     )
                     {
-                        OutlinedTextField(
+                        SearchBar(
+                            query = searchedVerb,
+                            onQueryChange = { searchedVerb = it },
+                            onSearch = {
+                                active = false
+                                val verb = uiState.verbs.singleOrNull {
+                                    it.baseForm.lowercase() == searchedVerb.lowercase() ||
+                                            it.pastParticiple.lowercase() == searchedVerb.lowercase() ||
+                                            it.simplePast.lowercase() == searchedVerb.lowercase() ||
+                                            it.spanishBaseForm.lowercase() == searchedVerb.lowercase() ||
+                                            it.spanishPastParticiple.lowercase() == searchedVerb.lowercase() ||
+                                            it.spanishSimplePast.lowercase() == searchedVerb.lowercase()
+                                }
+
+                                handleSearch(verb,navController, verbNotFound)
+                            },
+                            active = active,
+                            onActiveChange = { active = it },
+                            placeholder = { Text(text = "Type the verb") },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Search,
+                                    contentDescription = "Icono de buscar",
+                                )
+                            },
+                            trailingIcon = {
+                                Icon(
+                                    Icons.Default.ArrowForward,
+                                    contentDescription = "Icono hacia la derecha",
+                                    Modifier.clickable(onClick = {
+                                        val verb = uiState.verbs.singleOrNull {
+                                            it.baseForm.lowercase() == searchedVerb.lowercase() ||
+                                                    it.pastParticiple.lowercase() == searchedVerb.lowercase() ||
+                                                    it.simplePast.lowercase() == searchedVerb.lowercase() ||
+                                                    it.spanishBaseForm.lowercase() == searchedVerb.lowercase() ||
+                                                    it.spanishPastParticiple.lowercase() == searchedVerb.lowercase() ||
+                                                    it.spanishSimplePast.lowercase() == searchedVerb.lowercase()
+                                        }
+
+                                        handleSearch(verb, navController, verbNotFound)
+                                    })
+                                )
+                            },
+                        ) {
+                            if (searchedVerb.isNotEmpty()) {
+                                val filterVerbs = uiState.verbs.filter {
+                                    it.baseForm.contains(searchedVerb, true) ||
+                                            it.pastParticiple.contains(searchedVerb, true) ||
+                                            it.simplePast.contains(searchedVerb, true) ||
+                                            it.spanishBaseForm.contains(searchedVerb, true) ||
+                                            it.spanishPastParticiple.contains(searchedVerb, true) ||
+                                            it.spanishSimplePast.contains(searchedVerb, true)
+                                }
+
+                                LazyColumn {
+                                    items(filterVerbs) { verb ->
+                                        val matchingForm = when {
+                                            verb.baseForm.contains(searchedVerb, true) -> verb.baseForm
+                                            verb.pastParticiple.contains(searchedVerb, true) -> verb.pastParticiple
+                                            verb.simplePast.contains(searchedVerb, true) -> verb.simplePast
+                                            verb.spanishBaseForm.contains(searchedVerb, true) -> verb.spanishBaseForm
+                                            verb.spanishPastParticiple.contains(searchedVerb, true) -> verb.spanishPastParticiple
+                                            verb.spanishSimplePast.contains(searchedVerb, true) -> verb.spanishSimplePast
+                                            else -> "" // Add other cases for Spanish forms if needed
+                                        }
+
+                                        Text(
+                                            text = matchingForm,
+                                            modifier = Modifier
+                                                .padding(10.dp)
+                                                .clickable {
+                                                    handleSearch(verb, navController, verbNotFound)
+                                                    active = false
+                                                }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        if (verbNotFound.value) {
+                            Text(
+                                text = "The verb to search is misspelled or is not found in the database",
+                                color = Color.Red
+                            )
+                        }
+                        /* OutlinedTextField(
                             value = searchedVerb,
                             onValueChange = { searchedVerb = it },
                             modifier = Modifier.width(350.dp),
@@ -132,12 +221,13 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                                 text = "The verb to search is misspelled or is not found in the database",
                                 color = Color.Red
                             )
-                        }
+                        }*/
                     }
                 }
                 Column(
                     modifier = Modifier
-                        .fillMaxSize().padding(60.dp),
+                        .fillMaxSize()
+                        .padding(60.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -152,5 +242,15 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
 
             }
         }
+    }
+}
+
+
+fun handleSearch(verb: VerbsDTO?, navController: NavController, verbNotFound: MutableState<Boolean>) {
+    if (verb != null && !verb.verbProposal) {
+        navController.navigate("${Destination.Translate.route}/${verb.id}")
+        verbNotFound.value = false
+    } else {
+        verbNotFound.value = true
     }
 }
