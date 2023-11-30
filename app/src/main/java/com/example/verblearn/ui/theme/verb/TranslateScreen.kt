@@ -42,6 +42,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.verblearn.ui.theme.colorCard
+import com.example.verblearn.ui.theme.colorCardDefinition
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 
 
@@ -52,8 +54,6 @@ import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 @RequiresExtension(extension = Build.VERSION_CODES.S, version = 7)
 @Composable
 fun TranslateScreen(idVerb: Int, viewModel: VerbViewModel = hiltViewModel()) {
-    val colorCard = Color(0xFFFFFFFF)
-    val colorCardDefinition = Color(0x57D9DDEA)
     var translateOn by mutableStateOf(false)
     val favorites by viewModel.favorites.collectAsState()
 

@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.verblearn.data.local.entities.Favorite
+import com.example.verblearn.ui.theme.colorCardDefinition
 import com.example.verblearn.ui.theme.navigation.Destination
 import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 
@@ -39,8 +40,6 @@ import com.example.verblearn.ui.theme.viewModel.VerbViewModel
 @Composable
 fun FavoriteScreen(verbs: List<Favorite>, navController: NavController, viewModel: VerbViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    val colorCard = Color(0x57D9DDEA)
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -89,7 +88,7 @@ fun FavoriteScreen(verbs: List<Favorite>, navController: NavController, viewMode
                                 }
                             }
                             .align(Alignment.CenterHorizontally),
-                        colors = CardDefaults.cardColors(containerColor = colorCard)
+                        colors = CardDefaults.cardColors(containerColor = colorCardDefinition)
                     ) {
                         Column(
                             modifier = Modifier
