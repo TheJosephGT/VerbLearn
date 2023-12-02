@@ -158,25 +158,27 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
 
                                 LazyColumn {
                                     items(filterVerbs) { verb ->
-                                        val matchingForm = when {
-                                            verb.baseForm.contains(searchedVerb, true) -> verb.baseForm
-                                            verb.pastParticiple.contains(searchedVerb, true) -> verb.pastParticiple
-                                            verb.simplePast.contains(searchedVerb, true) -> verb.simplePast
-                                            verb.spanishBaseForm.contains(searchedVerb, true) -> verb.spanishBaseForm
-                                            verb.spanishPastParticiple.contains(searchedVerb, true) -> verb.spanishPastParticiple
-                                            verb.spanishSimplePast.contains(searchedVerb, true) -> verb.spanishSimplePast
-                                            else -> "" // Add other cases for Spanish forms if needed
-                                        }
+                                        if(!verb.verbProposal){
+                                            val matchingForm = when {
+                                                verb.baseForm.contains(searchedVerb, true) -> verb.baseForm
+                                                verb.pastParticiple.contains(searchedVerb, true) -> verb.pastParticiple
+                                                verb.simplePast.contains(searchedVerb, true) -> verb.simplePast
+                                                verb.spanishBaseForm.contains(searchedVerb, true) -> verb.spanishBaseForm
+                                                verb.spanishPastParticiple.contains(searchedVerb, true) -> verb.spanishPastParticiple
+                                                verb.spanishSimplePast.contains(searchedVerb, true) -> verb.spanishSimplePast
+                                                else -> "" // Add other cases for Spanish forms if needed
+                                            }
 
-                                        Text(
-                                            text = matchingForm,
-                                            modifier = Modifier
-                                                .padding(10.dp)
-                                                .clickable {
-                                                    handleSearch(verb, navController, verbNotFound)
-                                                    active = false
-                                                }
-                                        )
+                                            Text(
+                                                text = matchingForm,
+                                                modifier = Modifier
+                                                    .padding(10.dp)
+                                                    .clickable {
+                                                        handleSearch(verb, navController, verbNotFound)
+                                                        active = false
+                                                    }
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -187,41 +189,6 @@ fun HomeScreen(navController: NavController, viewModel: VerbViewModel = hiltView
                                 color = Color.Red
                             )
                         }
-                        /* OutlinedTextField(
-                            value = searchedVerb,
-                            onValueChange = { searchedVerb = it },
-                            modifier = Modifier.width(350.dp),
-                            label = { Text(text = "Type the verb") },
-                            singleLine = true,
-                            trailingIcon = {
-                                Icon(
-                                    Icons.Default.ArrowForward,
-                                    contentDescription = "Icono hacia la derecha",
-                                    Modifier.clickable(onClick = {
-                                        val verb = uiState.verbs.singleOrNull {
-                                            it.baseForm.lowercase() == searchedVerb.lowercase() ||
-                                                    it.pastParticiple.lowercase() == searchedVerb.lowercase() ||
-                                                    it.simplePast.lowercase() == searchedVerb.lowercase() ||
-                                                    it.spanishBaseForm.lowercase() == searchedVerb.lowercase() ||
-                                                    it.spanishPastParticiple.lowercase() == searchedVerb.lowercase() ||
-                                                    it.spanishSimplePast.lowercase() == searchedVerb.lowercase()
-                                        }
-                                        if (verb != null && !verb.verbProposal) {
-                                            navController.navigate("${Destination.Translate.route}/${verb.id}")
-                                            verbNotFound.value = false
-                                        } else {
-                                            verbNotFound.value = true
-                                        }
-                                    })
-                                )
-                            },
-                        )
-                        if (verbNotFound.value) {
-                            Text(
-                                text = "The verb to search is misspelled or is not found in the database",
-                                color = Color.Red
-                            )
-                        }*/
                     }
                 }
                 Column(
